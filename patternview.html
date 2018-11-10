@@ -1,0 +1,41 @@
+<html>
+    <style>
+        .title {
+        font: 15px sans-serif;
+    }
+
+    .legend {
+        font: 10px sans-serif;
+    }
+    .axis path,
+    .axis line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+    }
+
+    .x.axis.path {
+        display: none;
+    }
+
+    .line {
+    fill: none;
+    stroke: black;
+    stroke-width: 1.2px;
+    }
+
+    #stacked{
+        width: 600;
+        height: 500;
+        margin-left: 1200px
+    }
+    </style>
+    <body>
+            <div id="stacked">
+                <!-- <h1>hello</h1> -->
+            </div>
+
+            <script src="https://d3js.org/d3.v4.min.js"></script>
+            <script src="PlotStackedBarChart.js"></script>
+    </body>
+</html>
