@@ -27,7 +27,7 @@
 
 	d3.json("cfnai.json", function(error, data) {
 
-		data = data.slice(data.length - 125, data.length );
+		// data = data.slice(data.length - 125, data.length );
 
 		var keys = d3.keys(data[0]);
 

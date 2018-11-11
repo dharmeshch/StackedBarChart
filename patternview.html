@@ -1,5 +1,6 @@
 <html>
     <style>
+        .bar { fill: steelblue; }
         .title {
         font: 15px sans-serif;
     }
@@ -25,17 +26,23 @@
     }
 
     #stacked{
-        width: 600;
-        height: 500;
+        /* margin-top: 500; */
+        margin-left: 1200px
+    }
+    #barChart{
         margin-left: 1200px
     }
     </style>
     <body>
-            <div id="stacked">
-                <!-- <h1>hello</h1> -->
-            </div>
+            <div id="barChart">
 
+             </div>
+            <div id="stacked">
+
+            </div>
+            <!-- <script src="data.csv"></script>  -->
             <script src="https://d3js.org/d3.v4.min.js"></script>
             <script src="PlotStackedBarChart.js"></script>
+            <script src="barchart.js"></script>
     </body>
 </html>
