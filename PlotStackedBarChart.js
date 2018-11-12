@@ -1,11 +1,9 @@
     var margin = {top: 20, right: 20, bottom: 30, left: 40};
 	var width = 600 - margin.left - margin.right;
-	var height = 500 - margin.top - margin.bottom;
+	var height = 400 - margin.top - margin.bottom; 
+	var counter = 0;	
 
-	var timeFormat = d3.timeFormat("%m-%Y");
-	var parseDate = d3.timeParse("%Y:%m");
-
-	var x = d3.scaleTime()
+	var x = d3.scaleLinear()
 		.range([0, width]);
 
 	var y = d3.scaleLinear()
@@ -15,7 +13,7 @@
 		.range([0, width]);
 
 	var color = d3.scaleOrdinal()
-		.range(["#BBCDA3", "#055C81", "#B13C3D", "#CCB40C"]);
+		.range(["#BBCDA3", "#055C81", "#B13C3D", "#CCB40C","#BBCDA3", "#055C81", "#B13C3D", "#CCB40C","#BBCDA3", "#055C81", "#B13C3D", "#CCB40C"]);
 
 	var labels = ["Production and Income", "Employment, Unemployment, and Hours", "Consumption and Housing", "Sales, Orders, and Inventories"];
 
@@ -25,18 +23,9 @@
 	var centerLine = d3.axisTop(center).ticks(0);
 
 
-	d3.json("cfnai.json", function(error, data) {
-
-		// data = data.slice(data.length - 125, data.length );
+	d3.json("stackedBarChartData.json", function(error, data) {
 
 		var keys = d3.keys(data[0]);
-
-		var keys = keys.filter(function(key) { 
-			if (key !== "id" && key !== "diffusion" && key !== "date" && key !== "cfnai" && key !== "cfnai_ma3") {
-				return key; 
-			}  
-		});
-
 
 		data.forEach(function(d) {
 			var y0_positive = 0;
@@ -51,21 +40,16 @@
 			})
 		})
 
-		var y_min = d3.min(data, function(d) { return d.cfnai - 0.1 });
-		var y_max = d3.max(data, function(d) { return d.cfnai + 0.1 });
 
-		var datestart = d3.min(data, function(d) { return parseDate(d.date); });
-		var dateend = d3.max(data, function(d) { return parseDate(d.date); });
+		var y_min = d3.min(data, function(d) { return Object.keys(d).length});
+		var y_max = d3.max(data, function(d){ return Object.keys(d).length});
 
+		var datestart = 0;
+		var dateend = Object.keys(data).length;
 
-
-		x.domain([datestart, dateend]);
-		y.domain([y_min, y_max]);
-		color.domain(keys);
-
-		// var cfnai_ma3 = d3.line()
-		// 	.x(function(d) { return x(parseDate(d.date)); })
-		// 	.y(function(d) { return y(d.cfnai_ma3); });
+		x.domain([0, dateend]);
+		y.domain([0, y_max]);
+		color.domain(data);
 
 		var svg = d3.select("#stacked").append("svg")
 									.attr("width", width + margin.left + margin.right)
@@ -81,7 +65,7 @@
 			.data(data)
 			.enter().append("g")
 			.attr("class", "g")
-			.attr("transform", function(d) { return "translate(" + x(parseDate(d.date)) + ", 0)"; });
+			.attr("transform", function(d) { return "translate(" + x(counter++) + ", 0)"; });
 
 		entry.selectAll("rect")
 			.data(function(d) { return d.components; })
@@ -91,10 +75,6 @@
 			.attr("height", function(d) { return Math.abs(y(d.y0) - y(d.y1)); })
 			.style("fill", function(d) { return color(d.key); } );
 
-		// var cfnai_ma3_line = svg.append("path")
-		// 	.datum(data)
-		// 	.attr("class", "line")
-		// 	.attr("d", cfnai_ma3);
 
 		var legend = svg.selectAll(".legend")
 			.data(color.domain())
