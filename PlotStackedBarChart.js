@@ -23,19 +23,20 @@
 	var centerLine = d3.axisTop(center).ticks(0);
 
 
-	d3.json("stackedBarChartData.json", function(error, data) {
+	d3.json("StackedBarData.json", function(error, data) {
+		data = data.urls
 
-		var keys = d3.keys(data[0]);
+		data.forEach(function(d,i) {
 
-		data.forEach(function(d) {
 			var y0_positive = 0;
 			var y0_negative = 0;
-
+			var keys = d3.keys(data[i]);
 			d.components = keys.map(function(key) {
-				if (d[key] >= 0) {
-					return {key: key, y1: y0_positive, y0: y0_positive += d[key] };
+				return {key: key, y1: y0_positive, y0: y0_positive += 0.5 };
+				if (d[key]) {
+					return {key: key, y1: y0_positive, y0: y0_positive += 0.5 };
 				} else if (d[key] < 0) {
-					return {key: key, y0: y0_negative, y1: y0_negative += d[key] };
+					return {key: key, y0: y0_negative, y1: y0_negative += 0.5 };
 				}
 			})
 		})
